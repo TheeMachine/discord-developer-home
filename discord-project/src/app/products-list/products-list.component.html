@@ -1,0 +1,49 @@
+<!-- <p>products-list works!</p>
+<p>
+    {{ date | date: 'dd MMMM yy, HH:mm' }}
+</p>
+<p>
+    {{ currency | currency: 'TRY ' }}
+</p>
+<p>
+    {{ itemsJson | json }}
+</p>
+<p>
+    {{ items | async | json }}
+</p>
+
+<p>
+    {{title | lowercase}}
+</p>
+
+<p>
+    {{subTitle | uppercase}}
+</p>
+
+<div>
+    {{ fullName | greeting: "Hello, ": " Good Bye :)" }}
+</div> -->
+
+<div class="relative overflow-x-auto">
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th>Ürün Adı</th>
+                <th>Ürün Fiyatı</th>
+                <th>İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (item of products; track $index) {
+                <tr>
+                    <td> {{item.name | titlecase}} </td>
+                    <td> {{item.price | currency: '₺'}} </td>
+                    <td> 
+                        <button class="px-2 py-1 bg-blue-700 rounded-md text-white text-2xs">Düzenle</button>    
+                    </td>
+                </tr>
+            }
+            
+        </tbody>
+    </table>
+</div>
