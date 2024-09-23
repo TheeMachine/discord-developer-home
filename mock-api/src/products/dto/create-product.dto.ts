@@ -33,7 +33,6 @@ export class CreateProductDto {
 
   @ApiProperty()
   @IsString()
-  @MinLength(10)
   description: string;
 
   @ApiProperty()

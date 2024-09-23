@@ -1,5 +1,6 @@
 import {
   AsyncPipe,
+  CommonModule,
   CurrencyPipe,
   DatePipe,
   JsonPipe,
@@ -13,6 +14,9 @@ import { of } from 'rxjs';
 import { GreetingPipe } from '../pipes/greeting.pipe';
 import { ProductsService } from '../services/products.service';
 import { Product } from '../services/models/product';
+import { RouterLink } from '@angular/router';
+import { HighlightDirective } from '../directives/highlight.directive';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'products-list',
@@ -20,17 +24,46 @@ import { Product } from '../services/models/product';
   imports: [
     TitleCasePipe,
     CurrencyPipe,
-    SlicePipe
+    SlicePipe,
+    CommonModule,
+    RouterLink,
+    HighlightDirective,
+    TranslocoPipe,
   ],
   templateUrl: './products-list.component.html',
   styleUrl: './products-list.component.scss',
 })
 export class ProductsListComponent {
   products: Product[] = [];
+  filteredProducts: Product[] = [];
   constructor(private productsService: ProductsService) {
+    this.getProducts();
+  }
+
+  getProducts() {
     this.productsService.getProducts().subscribe((products) => {
       this.products = products;
-      console.log(products);
+      this.filteredProducts = products;
+    });
+  }
+
+  onSearching(event: any) {
+    let searchKey = event.target.value;
+    if (searchKey) {
+      this.filteredProducts = this.products.filter((product) =>
+        product.name
+          .toLocaleLowerCase('tr')
+          .includes(searchKey.toLocaleLowerCase('tr'))
+      );
+    } else {
+      this.filteredProducts = this.products;
+    }
+  }
+
+  deleteProduct(productId: string) {
+    this.productsService.deleteProductById(productId).subscribe((response) => {
+      this.getProducts();
+      console.log(response);
     });
   }
 }

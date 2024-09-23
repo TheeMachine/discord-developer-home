@@ -18,4 +18,16 @@ export class ProductsService {
   postProduct(product: Product) {
     return this.httpClient.post<Product>(this.apiUrl + '/products', product);
   }
+
+  getProductById(productId: string): Observable<Product> {
+    return this.httpClient.get<Product>(`${this.apiUrl}/products/${productId}`);
+  }
+
+  patchProduct(productId: string,product: Product) {
+    return this.httpClient.patch<Product>(`${this.apiUrl}/products/${productId}`, product);
+  }
+
+  deleteProductById(productId: string): Observable<any> {
+    return this.httpClient.delete<any>(`${this.apiUrl}/products/${productId}`);
+  }
 }

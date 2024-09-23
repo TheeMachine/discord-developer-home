@@ -1,4 +1,14 @@
-<nav class="flex w-full bg-gray-400 p-4 gap-5 ">
-    <a class="hover:text-orange-700" [routerLink]="'/products-list'">Ürün Listesi</a>
-    <a class="hover:text-orange-700" [routerLink]="'/product-add'">Ürün Ekle</a>
-  </nav>
+<nav class="flex w-full bg-gray-400 p-4 gap-5 justify-between">
+  <div class="flex gap-5">
+    <a class="hover:text-orange-700" [routerLink]="'/products-list'">
+      {{ "Product List" | transloco }}
+    </a>
+    <a class="hover:text-orange-700" [routerLink]="'/product-add'">
+      {{ "Product Add" | transloco }}
+    </a>
+  </div>
+  <div class="flex gap-4">
+    <button (click)="setLanguage('tr')">TR</button>
+    <button (click)="setLanguage('en')">EN</button>
+  </div>
+</nav>

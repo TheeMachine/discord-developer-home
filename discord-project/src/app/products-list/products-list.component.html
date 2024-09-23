@@ -25,25 +25,55 @@
 </div> -->
 
 <div class="relative overflow-x-auto">
-    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-                <th>Ürün Adı</th>
-                <th>Ürün Fiyatı</th>
-                <th>İşlemler</th>
-            </tr>
-        </thead>
-        <tbody>
-            @for (item of products; track $index) {
-                <tr>
-                    <td> {{item.name | titlecase}} </td>
-                    <td> {{item.price | currency: '₺'}} </td>
-                    <td> 
-                        <button class="px-2 py-1 bg-blue-700 rounded-md text-white text-2xs">Düzenle</button>    
-                    </td>
-                </tr>
-            }
-            
-        </tbody>
-    </table>
+  <div class="py-5 px-2 flex justify-between">
+    <div>
+      {{ 'Product List' | transloco }}
+    </div>
+    <input #searchInput type="text" placeholder="Ürün Ara.." class="form-input rounded-md" (input)="onSearching($event)">
+  </div>
+  <table
+    class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+  >
+    <thead
+      class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+    >
+      <tr>
+        <th>Ürün Adı</th>
+        <th>Ürün Fiyatı</th>
+        <th>Ürün Aktifliği</th>
+        <th>İşlemler</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (item of filteredProducts; track $index) {
+      <tr>
+        <td highlight [searchTerm]="searchInput.value">
+          {{ item.name | titlecase }}
+        </td>
+        <td>{{ item.price | currency : "₺" }}</td>
+        <td
+          [ngClass]="{
+            'bg-red-300': !item.isActive,
+            'bg-green-300': item.isActive
+          }"
+          class="text-white"
+        >
+          {{ item.isActive ? "Aktif" : "Pasif" }}
+        </td>
+        <td class="flex gap-3">
+          <a
+            [routerLink]="['/product-edit', item.id]"
+            class="px-2 py-1 bg-blue-700 rounded-md text-white text-2xs"
+            >Düzenle
+          </a>
+          <a
+            (click)="deleteProduct(item.id)"
+            class="px-2 py-1 bg-red-700 rounded-md text-white text-2xs"
+            >Sil
+          </a>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
 </div>

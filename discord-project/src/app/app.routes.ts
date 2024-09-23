@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { ProductAddComponent } from './product-add/product-add.component';
 import { ProductsListComponent } from './products-list/products-list.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 export const routes: Routes = [
     {
@@ -12,12 +13,16 @@ export const routes: Routes = [
         component: ProductAddComponent,
     },
     {
+        path: 'product-edit/:productId',
+        component: ProductAddComponent,
+    },
+    {
         path: '',
         redirectTo: 'products-list',
         pathMatch: "full"
     },
     {
         path: '**',
-        redirectTo: 'product-list'
+        component: NotFoundComponent
     },
 ];

@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, OnModuleInit } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -44,7 +44,7 @@ export class ProductsService implements OnModuleInit {
   }
   findAll(
     where: FindOptionsWhere<Product> | FindOptionsWhere<Product>[] = {
-      isActive: true,
+      
     },
   ) {
     return this.productRepository.find({
@@ -52,10 +52,14 @@ export class ProductsService implements OnModuleInit {
     });
   }
 
-  findOne(id: string) {
-    return this.productRepository.findOne({
+  async findOne(id: string) {
+    const product = await this.productRepository.findOne({
       where: { id },
     });
+    console.log(product);
+    if(!product) throw new NotFoundException();
+
+    return product;
   }
 
   async update(id: string, updateProductDto: UpdateProductDto) {
@@ -64,8 +68,11 @@ export class ProductsService implements OnModuleInit {
     return this.findOne(id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} product`;
+  remove(id: string) {
+    this.productRepository.delete(id);
+    return {
+      success: true
+    }
   }
 
   async removeAll() {
